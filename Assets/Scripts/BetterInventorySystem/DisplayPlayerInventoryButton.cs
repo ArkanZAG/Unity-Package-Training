@@ -1,20 +1,23 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BetterInventorySystem
 {
     public class DisplayPlayerInventoryButton : MonoBehaviour
     {
+        [SerializeField] private Button button;
         [SerializeField] private PlayerInventory playerInventory;
         [SerializeField] private InventoryView view;
 
-        public void Display()
+        private void Awake()
         {
-            view.Display(playerInventory.Inventory, OnClicked);
+            button.onClick.AddListener(Display);
         }
 
-        private void OnClicked(int index)
+        public void Display()
         {
-            playerInventory.UseItem(index);
+            view.Display(playerInventory);
         }
     }
 }

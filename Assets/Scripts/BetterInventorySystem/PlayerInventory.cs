@@ -6,47 +6,27 @@ using UnityEngine.Events;
 
 namespace BetterInventorySystem
 {
-    public class PlayerInventory : MonoBehaviour
+    public class PlayerInventory : Inventory
     {
-        //DEBUG
-        public TextMeshProUGUI healthText;
-        public TextMeshProUGUI expText;
-        public int health, exp;
+        [SerializeField] private PlayerStats stats;
         
-        private List<Item> inventory = new();
-
-        public List<Item> Inventory => inventory;
-
-        private void RemoveItem(int itemIndex)
+        private void Awake()
         {
-            inventory.RemoveAt(itemIndex);
+            ItemPickup.OnPickedUp.AddListener(OnPickedUp);
         }
 
-        public void AddItem(Item item)
+        private void OnPickedUp(ItemPickup pickedUp)
         {
-            inventory.Add(item);
+            AddItem(pickedUp.Item);
+            Destroy(pickedUp.gameObject);
         }
 
-        public void UseItem(int index)
+        public override void UseItem(int index)
         {
-            var item = inventory[index];
-            ExecuteItemEffect(item);
+            var item = items[index];
+            stats.ExecuteItemEffect(item);
             RemoveItem(index);
         }
 
-        private void ExecuteItemEffect(Item item)
-        {
-            switch (item.itemType)
-            {
-                case Item.ItemType.Potion:
-                    health += item.value;
-                    healthText.text = $"HP:{health}";
-                    break;
-                case Item.ItemType.Book:
-                    exp += item.value;
-                    expText.text = $"EXP:{exp}";
-                    break;
-            }
-        }
     }
 }
