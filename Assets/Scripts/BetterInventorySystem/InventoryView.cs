@@ -22,18 +22,23 @@ namespace BetterInventorySystem
 
         public void Hide()
         {
-            if (currentInventory != null)
-            {
-                currentInventory.onUpdated.RemoveListener(Display);
-                currentInventory = null;
-            }
+            CleanInventory();
             
             holder.gameObject.SetActive(false);
+        }
+
+        public void CleanInventory()
+        {
+            if (currentInventory == null) return;
+            currentInventory.onUpdated.RemoveListener(Display);
+            currentInventory = null;
         }
         
         public void Display(Inventory inventory)
         {
             Debug.Log("WILL DISPLAY");
+            CleanInventory();
+            
             currentInventory = inventory;
             currentInventory.onUpdated.AddListener(Display);
             holder.gameObject.SetActive(true);
@@ -44,7 +49,7 @@ namespace BetterInventorySystem
             {
                 var item = inventory.Items[index];
                 GameObject obj = Instantiate(elementPrefab, parent);
-                var element = obj.GetComponent<InventoryElement>();
+                InventoryElement element = obj.GetComponent<InventoryElement>();
                 element.Display(item, index, inventory.UseItem);
                 spawnedElements.Add(element);
             }
