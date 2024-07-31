@@ -12,11 +12,13 @@ namespace BetterInventorySystem
         
         private void Awake()
         {
+            Debug.Log("Subs to OnPickedUp Function");
             ItemPickup.OnPickedUp.AddListener(OnPickedUp);
         }
 
         private void OnPickedUp(ItemPickup pickedUp)
         {
+            Debug.Log("OnPickedUp Function Called");
             AddItem(pickedUp.Item);
             Destroy(pickedUp.gameObject);
         }

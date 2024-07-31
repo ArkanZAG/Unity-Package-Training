@@ -14,6 +14,7 @@ namespace BetterInventorySystem
 
         private void OnMouseDown()
         {
+            Debug.Log("Event being shot");
             OnPickedUp?.Invoke(this);
         }
     }
